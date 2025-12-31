@@ -1,0 +1,245 @@
+Transaction Anomaly & Fraud Detector
+React Web Application – Functional & Technical Specification
+
+1. Overview
+The Fraud Detector is a web-based React application that enables analysts and operations users to monitor, investigate, and manage suspicious financial transactions in near real-time. It connects to backend services that perform anomaly detection (rule-based and/or ML-based), surfaces alerts, and provides workflows to review, escalate, and resolve them.
+
+The goal is to provide a clear, fast, auditable UI for fraud monitoring, not to implement the detection models themselves in the frontend.
+
+2. Objectives
+Detect suspicious activity: Surface transactions flagged by backend detection engines.
+
+Prioritize risk: Show risk scores, severity levels, and key indicators of fraud.
+
+Enable investigation: Provide rich context for each alert (customer info, history, timelines).
+
+Support workflows: Let users assign, comment, change status, and track resolution.
+
+Auditability: Maintain a clear trail of what happened to each alert and by whom.
+
+Performance: UI should remain responsive for thousands of alerts and frequent updates.
+
+3. Target users and roles
+Fraud Analyst
+
+Reviews alerts, investigates transactions, adds notes.
+
+Changes status: open → under review → resolved → false positive, etc.
+
+Fraud Manager / Supervisor
+
+Monitors queues, assigns work, reviews decisions.
+
+Adjusts thresholds or rule configurations (if exposed to UI).
+
+System Admin
+
+Manages user access and roles (may be out-of-scope for initial version).
+
+4. High-level architecture
+Frontend:
+
+React (with hooks) + TypeScript (recommended but optional).
+
+State management: React Query or Redux Toolkit (for server state), or simple context for small scope.
+
+UI library: Material UI / Ant Design / Chakra UI (any one, or custom components).
+
+Backend (assumed, not implemented in React):
+
+REST or GraphQL API that exposes:
+
+Transactions
+
+Alerts
+
+Risk scores
+
+User actions (comments, status updates)
+
+Configuration (rules / thresholds) if in scope
+
+Data flow (frontend):
+
+React app authenticates the user (assume JWT / session; actual auth may be handled outside scope).
+
+UI calls APIs to fetch alert lists, alert details, and metrics.
+
+User actions (change status, add comments, re-run checks) are sent via POST/PUT/PATCH.
+
+UI updates optimistically and/or refetches to stay consistent.
+
+5. Core pages and features
+5.1 Login page (optional, if in scope)
+Features:
+
+Email/username + password form.
+
+"Forgot password" link (even if not functional initially).
+
+Basic validation and error messaging.
+
+5.2 Dashboard page
+Purpose: High-level overview for fraud monitoring.
+
+Key elements:
+
+KPIs cards:
+
+Total alerts today
+
+Open alerts
+
+High-risk alerts
+
+Average time to resolution
+
+Charts:
+
+Alerts over time (line chart).
+
+Alerts by risk level (bar/pie chart).
+
+Recent alerts table:
+
+Top N most recent or highest risk alerts with quick access.
+
+5.3 Alerts list page
+Purpose: Main working queue for analysts.
+
+Features:
+
+Filters & search:
+
+Date range
+
+Risk level (High/Medium/Low)
+
+Status (Open, Under Review, Resolved, False Positive)
+
+Type (e.g., card fraud, account takeover, etc. – optional)
+
+Free text search on transaction ID / customer ID.
+
+Table columns (example):
+
+Alert ID
+
+Created timestamp
+
+Customer ID / Name
+
+Transaction amount & currency
+
+Risk score
+
+Status
+
+Assigned to
+
+Actions (View details)
+
+Pagination or infinite scroll.
+
+5.4 Alert detail page
+Purpose: Deep investigation of one specific alert.
+
+Sections:
+
+Header:
+
+Alert ID, status, risk level, created date.
+
+Assigned analyst.
+
+Transaction summary:
+
+Transaction ID, amount, currency.
+
+Merchant / counterparty.
+
+Date/time, location (if available).
+
+Channel (web, mobile, ATM, POS).
+
+Customer section:
+
+Customer ID, name, segment.
+
+Basic KYC info.
+
+Recent account activity summary.
+
+Risk & detection explanation:
+
+Risk score (e.g., 0–100).
+
+Key contributing factors (e.g., unusual amount, new device, new location).
+
+Rules triggered (if rule-based).
+
+Model explanation snippet (if ML-based) – feature importance list, etc.
+
+Timeline:
+
+Sequence of related transactions or events.
+
+Analyst actions:
+
+Change status (Open → Under Review → Resolved → False Positive).
+
+Assign / reassign.
+
+Add comments / internal notes.
+
+Add tags or labels (optional).
+
+Audit log:
+
+List of all actions on the alert (status changes, comments, reassignments) with user and timestamp.
+
+5.5 Configuration / settings page (optional for v1)
+Scope (optional):
+
+View (and possibly edit) rule thresholds.
+
+Toggle rules on/off.
+
+Configure risk score boundaries (e.g., 80+ = high).
+
+May be read-only in early versions.
+
+6. API integration (frontend expectations)
+The React app will consume backend APIs. Example REST endpoints (you can adapt paths/naming):
+
+Authentication:
+
+POST /api/auth/login
+
+POST /api/auth/logout
+
+Dashboard metrics:
+
+GET /api/metrics/alerts-summary
+
+GET /api/metrics/alerts-over-time
+
+Alerts:
+
+GET /api/alerts
+
+Query params: page, pageSize, status, riskLevel, fromDate, toDate, search
+
+GET /api/alerts/{alertId}
+
+PATCH /api/alerts/{alertId}/status
+
+PATCH /api/alerts/{alertId}/assign
+
+POST /api/alerts/{alertId}/comments
+
+Config (optional):
+
+GET /api/config/rules
+
+PATCH /api/config/rules/{ruleId}
