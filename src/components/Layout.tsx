@@ -30,7 +30,7 @@ const drawerWidth = 240;
 const Layout: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { user, logout, isAuthenticated } = useAuth();
+  const { user, logout } = useAuth();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {

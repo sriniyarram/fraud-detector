@@ -1,11 +1,10 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Box, Grid, Paper, Typography, Card, CardContent, CircularProgress } from '@mui/material';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { AlertsSummary, Alert } from '../types';
+import { AlertsSummary } from '../types';
 
 const Dashboard: React.FC = () => {
   const [summary, setSummary] = React.useState<AlertsSummary | null>(null);
-  const [alerts, setAlerts] = React.useState<Alert[]>([]);
   const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
@@ -17,24 +16,7 @@ const Dashboard: React.FC = () => {
       averageResolutionTime: 4.5, // hours
     };
 
-    const mockAlertsOverTime = [
-      { date: 'Mon', count: 45, high: 8, medium: 20, low: 17 },
-      { date: 'Tue', count: 52, high: 10, medium: 25, low: 17 },
-      { date: 'Wed', count: 48, high: 9, medium: 22, low: 17 },
-      { date: 'Thu', count: 61, high: 12, medium: 30, low: 19 },
-      { date: 'Fri', count: 55, high: 11, medium: 26, low: 18 },
-      { date: 'Sat', count: 35, high: 6, medium: 16, low: 13 },
-      { date: 'Sun', count: 32, high: 5, medium: 14, low: 13 },
-    ];
-
-    const mockRiskDistribution = [
-      { name: 'High', value: 12, fill: '#f44336' },
-      { name: 'Medium', value: 28, fill: '#ff9800' },
-      { name: 'Low', value: 5, fill: '#4caf50' },
-    ];
-
     setSummary(mockSummary);
-    setAlerts([]);
     setLoading(false);
   }, []);
 

@@ -73,7 +73,6 @@ const Configuration: React.FC = () => {
 
   const [loading, setLoading] = useState(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
-  const [selectedRule, setSelectedRule] = useState<Rule | null>(null);
   const [editedRule, setEditedRule] = useState<Rule | null>(null);
   const [saveMessage, setSaveMessage] = useState('');
 
@@ -87,7 +86,6 @@ const Configuration: React.FC = () => {
   };
 
   const handleEditRule = (rule: Rule) => {
-    setSelectedRule(rule);
     setEditedRule({ ...rule });
     setEditDialogOpen(true);
   };

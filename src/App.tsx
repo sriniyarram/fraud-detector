@@ -10,7 +10,6 @@ import AlertsList from './pages/AlertsList';
 import AlertDetail from './pages/AlertDetail';
 import Configuration from './pages/Configuration';
 import { AuthProvider, useAuth } from './utils/AuthContext';
-import { CircularProgress, Box } from '@mui/material';
 
 const theme = createTheme({
   palette: {
@@ -43,25 +42,6 @@ const queryClient = new QueryClient({
     },
   },
 });
-
-// Protected Route Component
-const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { isAuthenticated, isLoading } = useAuth();
-
-  if (isLoading) {
-    return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
-        <CircularProgress />
-      </Box>
-    );
-  }
-
-  if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
-  }
-
-  return <>{children}</>;
-};
 
 function AppRoutes() {
   const { isAuthenticated } = useAuth();

@@ -4,8 +4,6 @@ import {
   Paper,
   Typography,
   Grid,
-  Card,
-  CardContent,
   Button,
   TextField,
   Select,
@@ -38,7 +36,6 @@ import {
   Person as PersonIcon,
   CreditCard as TransactionIcon,
   VerifiedUser as VerifiedIcon,
-  History as HistoryIcon,
   Comment as CommentIcon,
 } from '@mui/icons-material';
 import { formatDistanceToNow, format } from 'date-fns';

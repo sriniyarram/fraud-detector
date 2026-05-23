@@ -19,10 +19,6 @@ import {
   Chip,
   Typography,
   CircularProgress,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { formatDistanceToNow } from 'date-fns';
@@ -37,8 +33,6 @@ const AlertsList: React.FC = () => {
   const [searchText, setSearchText] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
   const [riskLevelFilter, setRiskLevelFilter] = useState('');
-  const [selectedAlert, setSelectedAlert] = useState<Alert | null>(null);
-  const [bulkActionOpen, setBulkActionOpen] = useState(false);
 
   React.useEffect(() => {
     // Mock data - replace with actual API call
